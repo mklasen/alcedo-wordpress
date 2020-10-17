@@ -1,0 +1,84 @@
+{
+    "name": "mklasen/wptest",
+    "authors": [
+        {
+            "name": "Marinus Klasen",
+            "email": "marinus@mklasen.nl"
+        }
+    ],
+    "description": "",
+    "type": "project",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://wpackagist.org"
+        },
+        {
+            "type": "vcs",
+            "url": "https://gist.github.com/Giuseppe-Mazzapica/e8c8e4dfc8e65f1903ac.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://gist.github.com/Giuseppe-Mazzapica/9939793dfb2a2361cd0f.git"
+        }
+    ],
+    "require": {
+        "wecodemore/wpstarter": "~2.0",
+        "johnpbloch/wordpress-core": "5.4.*@stable",
+        "gmazzap/wpstarter-example-files": "*"
+    },
+    "require-dev": {
+        "wpackagist-plugin/query-monitor": "2.7.*",
+        "wpackagist-plugin/debug-bar": "*",
+        "rarst/laps": "~1.2",
+        "wpackagist-plugin/plugin-profiler": "~1.0",
+        "gmazzap/plugin-profiler-mu": "*"
+    },
+    "config": {
+        "vendor-dir": "app/www/vendor",
+        "optimize-autoloader": true
+    },
+    "scripts": {
+        "post-install-cmd": "WCM\\WPStarter\\Setup::run",
+        "post-update-cmd": [
+            "WCM\\WPStarter\\Setup::run"
+        ],
+        "wpstarter": "WCM\\WPStarter\\Setup::run"
+    },
+    "extra": {
+        "wordpress-install-dir": "app/www/wp",
+        "wordpress-content-dir": "app/www/content",
+        "wpstarter": {
+            "prevent-overwrite": [
+                ".gitignore",
+                "app/www/wp-config.php",
+                "app/www/index.php"
+            ],
+            "gitignore": {
+                "wp": true,
+                "wp-content": true,
+                "vendor": true,
+                "common": true,
+                "custom": [
+                    "*.log",
+                    ".htaccess",
+                    "sitemap.xml",
+                    "sitemap.xml.gz"
+                ]
+            }
+        },
+        "installer-paths": {
+            "app/www/content/plugins/{$name}": [
+                "type:wordpress-plugin"
+            ],
+            "app/www/content/mu-plugins/{$name}": [
+                "type:wordpress-muplugin"
+            ],
+            "app/www/content/themes/{$name}": [
+                "type:wordpress-theme"
+            ]
+        }
+    }
+}

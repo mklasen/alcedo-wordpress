@@ -1,0 +1,68 @@
+version: "3"
+
+services:
+  db:
+    container_name: ${NAME}-db
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - "./data/db:/var/lib/mysql"
+    restart: unless-stopped
+    expose:
+      - '3306'
+    ports: 
+      - "3306:3306"
+
+  nginx:
+    container_name: ${NAME}-nginx
+    image: nginx:alpine
+    volumes:
+      - ./config/nginx:/etc/nginx/conf.d
+      - ./:/var/www/
+    expose:
+      - '80'
+    depends_on:
+      - wordpress
+    restart: unless-stopped
+    environment:
+      VIRTUAL_HOST: "${SITE_DOMAIN}"
+    links:
+        - wordpress
+
+  wordpress:
+    container_name: ${NAME}-wordpress
+    image: wordpress:fpm-alpine
+    depends_on:
+      - db
+    expose:
+      - '9000'
+    volumes:
+      - ./:/var/www/
+      - ./config/php/php.conf:/usr/local/etc/php/conf.d/custom.ini
+    restart: unless-stopped
+    links:
+      - db
+  mailhog:
+    container_name: ${NAME}-mailhog
+    image: mailhog/mailhog:latest
+    depends_on:
+      - wordpress
+    expose:
+      - '8025'
+      - '1025'
+    restart: unless-stopped
+    links:
+      - wordpress
+    environment:
+      VIRTUAL_HOST: "${MAIL_DOMAIN}"
+      VIRTUAL_PORT: 8025
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
+
