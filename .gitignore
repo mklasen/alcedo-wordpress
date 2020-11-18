@@ -8,7 +8,7 @@ sitemap.xml.gz
 app/www/wp/
 app/www/content/
 app/www/vendor/
-
+data/
 
 ### Windows
 Thumbs.db

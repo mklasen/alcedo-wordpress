@@ -14,8 +14,6 @@ services:
     restart: unless-stopped
     expose:
       - '3306'
-    ports: 
-      - "3306:3306"
 
   nginx:
     container_name: ${NAME}-nginx
@@ -35,17 +33,22 @@ services:
 
   wordpress:
     container_name: ${NAME}-wordpress
-    image: wordpress:fpm-alpine
+    build:
+      context: ./config/docker
+      dockerfile: wordpress.Dockerfile
     depends_on:
       - db
     expose:
       - '9000'
     volumes:
       - ./:/var/www/
-      - ./config/php/php.conf:/usr/local/etc/php/conf.d/custom.ini
+      - ./config/php/php.conf:/usr/local/etc/php/conf.d/php.ini
     restart: unless-stopped
     links:
       - db
+    environment:
+      PHP_AUTOCONF: /usr/bin/autoconf
+      
   mailhog:
     container_name: ${NAME}-mailhog
     image: mailhog/mailhog:latest
@@ -57,9 +60,21 @@ services:
     restart: unless-stopped
     links:
       - wordpress
+      - toolbox
     environment:
       VIRTUAL_HOST: "${MAIL_DOMAIN}"
       VIRTUAL_PORT: 8025
+
+  toolbox:
+    container_name: ${NAME}-toolbox
+    image: wordpress:cli
+    command: tail -f /dev/null
+    volumes:
+      - ./:/var/www
+    working_dir: /var/www
+    depends_on:
+      - wordpress
+      - db
 
 networks:
   default:
