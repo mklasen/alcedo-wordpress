@@ -1,3 +1,14 @@
+### Project: General
+app/www/content/plugins/*
+app/www/content/themes/*
+
+### Project: Allowed Plugins & Themes
+!app/www/content/plugins/plugin/
+!app/www/content/themes/theme/
+
+### Project: Front-end
+app/frontend/node_modules
+
 ### WP Starter
 .env
 app/www/wp-config.php
@@ -6,7 +17,7 @@ app/www/wp-config.php
 sitemap.xml
 sitemap.xml.gz
 app/www/wp/
-app/www/content/
+app/www/content/uploads
 app/www/vendor/
 data/
 

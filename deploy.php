@@ -38,6 +38,18 @@ task(
 
 		writeln( ' - Environment symlink' );
 		run( 'ln -nfs {{deploy_path}}/shared/.env {{release_path}}/.env' );
+
+		writeln( ' - Debug symlink' );
+		run( 'touch {{deploy_path}}/shared/debug.log && ln -nfs {{deploy_path}}/shared/debug.log {{release_path}}/app/www/content/debug.log' );
+	}
+);
+
+// Restart PHP-FPM
+task(
+	'deploy:restart_php-fpm',
+	function() {
+		writeln( ' - Restart PHP-FPM' );
+		run( '[ -f ~/tools/cloudways-manage-server/restart-php-fpm.php ] && php ~/tools/cloudways-manage-server/restart-php-fpm.php || echo "restart script not found."' );
 	}
 );
 
@@ -100,6 +112,7 @@ task(
 		'deploy:robots_txt',
 		'deploy:clear_paths',
 		'deploy:symlink',
+		'deploy:restart_php-fpm',
 		'deploy:unlock',
 		'cleanup',
 		'success',
