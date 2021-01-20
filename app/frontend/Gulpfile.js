@@ -8,6 +8,7 @@ const sass = require('gulp-sass');
 const cssnano = require('gulp-cssnano');
 const sourcemaps = require('gulp-sourcemaps');
 const autoprefixer = require('gulp-autoprefixer');
+const googleWebFonts = require('gulp-google-webfonts');
 const merge = require('merge-stream');
 const imagemin = require('gulp-imagemin');
 const fs = require('fs');
@@ -86,12 +87,33 @@ gulp.task('scripts', function () {
 	return merge(tasks);
 });
 
+gulp.task('fonts', function () {
+    const things = ['plugins', 'themes'];
+
+    const tasks = [];
+    things.map((thing) => {
+        const folders = getFolders('./' + thing + '/');
+        if (folders.length) {
+            folders.map((dir) => {
+                let fontFile = './' + thing + '/' + dir + '/fonts.list';
+                if (fs.existsSync(fontFile)) {
+                    tasks.push(gulp.src(fontFile)
+                        .pipe(googleWebFonts({}))
+                        .pipe(gulp.dest('./../www/content/'+thing+'/' + dir + '/assets/fonts'))
+                    );
+                }
+            });
+        }
+	});
+	return merge(tasks);
+});
+
 gulp.task('watch', function () {
 	gulp.watch(['./themes/**/css/*/**.scss', './themes/**/css/*.scss'], gulp.series(['css']));
 	gulp.watch('./themes/**/js/*.js', gulp.series(['scripts']));
 });
 
-gulp.task('default', gulp.series(['css', 'scripts', 'watch']), () => {
+gulp.task('default', gulp.series(['fonts', 'css', 'scripts', 'watch']), () => {
 	//
 });
 
