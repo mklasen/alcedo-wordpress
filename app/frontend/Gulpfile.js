@@ -69,11 +69,11 @@ gulp.task('scripts', function () {
 		const tasks = folders.map((dir) => {
 			return gulp.src(['./' + thing + '/' + dir + '/js/*.js'])
 				.pipe(sourcemaps.init())
-				.pipe(rollup({
-					plugins: [babel({
-						presets: ['@babel/env']
-					}), resolve(), commonjs()]
-				}, 'umd'))
+				// .pipe(rollup({
+				// 	plugins: [babel({
+				// 		presets: ['@babel/env']
+				// 	}), resolve(), commonjs()]
+				// }, 'umd'))
 				.pipe(sourcemaps.write())
 				.pipe(gulp.dest('./../www/content/'+thing+'/' + dir + '/assets/js/'))
 				.pipe(rename({
@@ -113,7 +113,7 @@ gulp.task('watch', function () {
 	gulp.watch('./themes/**/js/*.js', gulp.series(['scripts']));
 });
 
-gulp.task('default', gulp.series(['fonts', 'css', 'scripts', 'watch']), () => {
+gulp.task('default', gulp.series(['css', 'scripts', 'watch']), () => {
 	//
 });
 

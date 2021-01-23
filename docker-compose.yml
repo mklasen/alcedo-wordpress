@@ -75,6 +75,9 @@ services:
     depends_on:
       - wordpress
       - db
+    links:
+      - wordpress
+      - db
 
 networks:
   default:

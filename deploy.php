@@ -11,8 +11,8 @@ set( 'composer_options', 'install --optimize-autoloader' );
 host( 'staging' )
 	->stage( 'staging' )
 	->set( 'branch', 'staging' )
-	->hostname( '_hostname_or_ip_' )
-	->set( 'deploy_path', '_path_to_deploy_folder_' )
+	->hostname( 'kingfisher' )
+	->set( 'deploy_path', '~/sites/timeline' )
 	->set( 'keep_releases', 3 );
 
 // Production host
