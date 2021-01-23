@@ -4,13 +4,13 @@ namespace Deployer;
 require 'recipe/common.php';
 
 set( 'application', 'wptest' );
-set( 'repository', 'git@github.com:usehonorato/wordpress.git' );
+set( 'repository', 'git@github.com:mklasen/timeline.git' );
 set( 'composer_options', 'install --optimize-autoloader' );
 
 // Staging staging
 host( 'staging' )
 	->stage( 'staging' )
-	->set( 'branch', 'staging' )
+	->set( 'branch', 'master' )
 	->hostname( 'kingfisher' )
 	->set( 'deploy_path', '~/sites/timeline' )
 	->set( 'keep_releases', 3 );
