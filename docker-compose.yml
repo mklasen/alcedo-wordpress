@@ -10,67 +10,58 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - "./data/db:/var/lib/mysql"
-    restart: unless-stopped
+      - "./app/data/db:/var/lib/mysql"
     expose:
-      - '3306'
+      - "3306"
+    restart: unless-stopped
 
   nginx:
     container_name: ${NAME}-nginx
     image: nginx:alpine
     volumes:
-      - ./config/nginx:/etc/nginx/conf.d
+      - /home/mklasen/server-management/config/nginx:/etc/nginx/conf.d
       - ./:/var/www/
     expose:
-      - '80'
+      - "80"
     depends_on:
       - wordpress
-    restart: unless-stopped
     environment:
       VIRTUAL_HOST: "${SITE_DOMAIN}"
     links:
-        - wordpress
+      - wordpress
+    restart: unless-stopped
 
   wordpress:
     container_name: ${NAME}-wordpress
+    user: "1000:1000"
     build:
-      context: ./config/docker
+      context: /home/mklasen/server-management/config/wordpress
       dockerfile: wordpress.Dockerfile
     depends_on:
       - db
     expose:
-      - '9000'
+      - "9000"
     volumes:
+      - /home/mklasen/server-management/config/php/default.conf:/usr/local/etc/php/conf.d/php.ini
       - ./:/var/www/
-      - ./config/php/php.conf:/usr/local/etc/php/conf.d/php.ini
-    restart: unless-stopped
+      - /home/mklasen/server-management/tmp/xdebug:/tmp/xdebug
     links:
       - db
+    external_links:
+      - catchall
     environment:
       PHP_AUTOCONF: /usr/bin/autoconf
-      
-  mailhog:
-    container_name: ${NAME}-mailhog
-    image: mailhog/mailhog:latest
-    depends_on:
-      - wordpress
-    expose:
-      - '8025'
-      - '1025'
     restart: unless-stopped
-    links:
-      - wordpress
-      - toolbox
-    environment:
-      VIRTUAL_HOST: "${MAIL_DOMAIN}"
-      VIRTUAL_PORT: 8025
 
   toolbox:
     container_name: ${NAME}-toolbox
     image: wordpress:cli
     command: tail -f /dev/null
+    user: "1000:1000"
     volumes:
       - ./:/var/www
+      - /home/mklasen/server-management/config/php/default.conf:/usr/local/etc/php/conf.d/default.ini
+      - /home/mklasen/server-management/tmp/xdebug:/tmp/xdebug
     working_dir: /var/www
     depends_on:
       - wordpress
@@ -78,9 +69,9 @@ services:
     links:
       - wordpress
       - db
+    restart: unless-stopped
 
 networks:
   default:
     external:
       name: nginx-proxy
-

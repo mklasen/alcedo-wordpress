@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<ruleset name="mklasen-project">
+    <description>PHPCS</description>
+
+    <config name="installed_paths" value="app/www/vendor/wp-coding-standards/wpcs" />
+
+    <config name="ignore_warnings_on_exit" value="1" />
+
+    <rule ref="WordPress"/>
+
+    <file>.</file>
+    <exclude-pattern>*/app/www/vendor/*</exclude-pattern>
+    <exclude-pattern>*/app/frontend/node_modules/*</exclude-pattern>
+
+    <config name="minimum_supported_wp_version" value="4.7"/>
+
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="mklasen-project"/>
+            </property>
+        </properties>
+    </rule>
+
+</ruleset>

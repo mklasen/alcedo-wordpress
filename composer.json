@@ -1,38 +1,26 @@
 {
-    "name": "mklasen/avondklok",
+    "name": "",
+    "type": "project",
     "authors": [
         {
             "name": "Marinus Klasen",
             "email": "marinus@mklasen.nl"
         }
     ],
-    "description": "",
-    "type": "project",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": [
-        {
+    "repositories": {
+        "0": {
             "type": "composer",
             "url": "https://wpackagist.org"
-        },
-        {
-            "type": "vcs",
-            "url": "https://gist.github.com/Giuseppe-Mazzapica/e8c8e4dfc8e65f1903ac.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://gist.github.com/Giuseppe-Mazzapica/9939793dfb2a2361cd0f.git"
         }
-    ],
-    "require": {
-        "wecodemore/wpstarter": "~2.0",
-        "johnpbloch/wordpress-core": "5.6.*@stable",
-        "gmazzap/wpstarter-example-files": "*"
     },
     "require-dev": {
-        "wpackagist-plugin/query-monitor": "2.7.*",
-        "wpackagist-plugin/debug-bar": "*",
-        "wpackagist-plugin/plugin-profiler": "~1.0"
+        "wpackagist-plugin/simply-show-hooks": "1.*",
+        "squizlabs/php_codesniffer": "^3.6",
+        "wp-coding-standards/wpcs": "^2.3"
+    },
+    "require": {
+        "wecodemore/wpstarter": "~2.0",
+        "johnpbloch/wordpress-core": "*"
     },
     "config": {
         "vendor-dir": "app/www/vendor",
@@ -40,9 +28,7 @@
     },
     "scripts": {
         "post-install-cmd": "WCM\\WPStarter\\Setup::run",
-        "post-update-cmd": [
-            "WCM\\WPStarter\\Setup::run"
-        ],
+        "post-update-cmd": "WCM\\WPStarter\\Setup::run",
         "wpstarter": "WCM\\WPStarter\\Setup::run"
     },
     "extra": {
