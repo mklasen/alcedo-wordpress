@@ -4,8 +4,8 @@ namespace Deployer;
 require 'recipe/common.php';
 
 
-set( 'application', 'reserveerjewinkel' );
-set( 'repository', 'git@github.com:conference7/reserveerjewinkel.git' );
+set( 'application', 'wptest' );
+set( 'repository', 'git@github.com:mklasen/_repo_.git' );
 
 // [Optional] Allocate tty for git clone. Default value is false.
 set( 'git_tty', true );
@@ -21,7 +21,7 @@ host( 'prod' )
 	->stage( 'prod' )
 	->set( 'branch', 'master' )
 	->hostname( 'bijnoabers' )
-	->set( 'deploy_path', '/home/master/sites/reserveerjewinkel/deploy' )
+	->set( 'deploy_path', '/home/master/sites/__site__/deploy' )
 	->set( 'keep_releases', 5 );
 
 // Symlinks
@@ -39,12 +39,6 @@ task(
 		
 		writeln( ' - htaccess symlink' );
 		run( 'ln -nfs {{deploy_path}}/shared/.htaccess {{release_path}}/app/www/.htaccess' );
-
-		writeln( ' - Archive symlink' );
-		run( 'ln -nfs /var/www/comwifi-medelana/archived-sites {{release_path}}/app/www/archive' );
-
-		writeln( ' - USA symlink' );
-		run( 'ln -nfs /var/www/comwifi-medelana/archived-sites/usa {{release_path}}/app/www/usa' );
 	}
 );
 
@@ -76,7 +70,6 @@ task(
 task(
 	'deploy:clear_cache',
 	function() {
-		// run( "wp eval \"do_action( 'warpdrive_cache_flush' );\" --path=/var/www/comwifi-medelana/wordpress/current/" );
 		// run( "touch ~/wordpress/php-fpm.service" );
 	}
 );
